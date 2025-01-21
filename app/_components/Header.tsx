@@ -45,7 +45,7 @@ function Header() {
 
 
   return (
-    <Navbar maxWidth='full' onMenuOpenChange={setIsMenuOpen}>
+    <Navbar maxWidth='full' onMenuOpenChange={setIsMenuOpen} >
         <NavbarContent>
             <NavbarMenuToggle
             aria-label={isMenuOpen?"Close menu":"Open menu"}
@@ -60,7 +60,7 @@ function Header() {
 
             {MenuList.map((item,index)=>
             (
-                <NavbarItem key={index} className='text-xl text-gray-700 font-medium hover:underline mx-2'>
+                <NavbarItem key={index} className='text-xl text-gray-700 font-medium hover:font-bold mx-2'>
                     <Link href={item.path}>
                      {item.name}
 
