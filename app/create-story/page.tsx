@@ -31,13 +31,13 @@ function CreateStory() {
         <StorySubjectinputs userSelection={onHandleUserSelection}/>
 
         {/* Story Type */}
-        <StoryType/>
+        <StoryType userSelection={onHandleUserSelection}/>
 
         {/* Age Group */}
-        <AgeGroup/>
+        <AgeGroup userSelection={onHandleUserSelection}/>
 
         {/* Image Style */}
-        <ImageStyle/>
+        <ImageStyle userSelection={onHandleUserSelection}/>
 
       </div>
     </div>

@@ -1,7 +1,13 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-function StoryType() {
+export interface OptionField{
+    label:string,
+    imageUrl:string,
+    isFree:boolean
+}
+
+function StoryType({userSelection}:any) {
 
     const OptionList=[
         {
@@ -22,6 +28,17 @@ function StoryType() {
     ]
     const [selectedOption,setselectedOption]=useState<string>();
 
+    const onUserSelect = (item:OptionField)=>{
+        setselectedOption(item.label);
+
+        userSelection({
+            fieldValue:item?.label,
+            fieldName:'storyType'
+        })
+
+
+    }
+
   return (
     <div>
        <label className='font-bold text-4xl text-primary'>
@@ -33,8 +50,8 @@ function StoryType() {
                     ${selectedOption==item.label?'grayscale-0 border-2 rounded-3xl border-primary font-bold':'grayscale'}
 
 
-                `} onClick={()=>
-                    setselectedOption(item.label)
+                `} onClick={()=>onUserSelect(item)
+                    
                 }>
                     <h2 className='absolute bottom-5 text-2xl
                     text-blue-900 text-center w-full'>{item.label}</h2>

@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React, { useState } from 'react'
+import { OptionField } from './StoryType';
 
-function ImageStyle() {
+function ImageStyle({userSelection}:any) {
      const OptionList=[
           {
               label:'3D Cartoon',
@@ -25,11 +26,22 @@ function ImageStyle() {
         }
       ]
       const [selectedOption,setselectedOption]=useState<string>();
+
+           const onUserSelect = (item:OptionField)=>{
+                    setselectedOption(item.label);
+            
+                    userSelection({
+                        fieldValue:item?.label,
+                        fieldName:'imageType'
+                    })
+            
+            
+                }
   
     return (
       <div>
          <label className='font-bold text-4xl text-primary'>
-              3 Age Group
+              4 Image Style 
           </label>
           <div className='grid grid-cols-3 gap-5 mt-3 '>
               {OptionList.map((item,index)=>(
@@ -38,7 +50,7 @@ function ImageStyle() {
   
   
                   `} onClick={()=>
-                      setselectedOption(item.label)
+                    onUserSelect(item)
                   }>
                       <h2 className='absolute bottom-5 text-2xl
                       text-blue-900 text-center w-full'>{item.label}</h2>
