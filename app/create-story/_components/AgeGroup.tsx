@@ -27,7 +27,7 @@ function AgeGroup({userSelection}:any) {
       
               userSelection({
                   fieldValue:item?.label,
-                  fieldName:'storyType'
+                  fieldName:'ageGroup'
               })
       
       

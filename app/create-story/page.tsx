@@ -1,20 +1,33 @@
 "use client";
 
-import React from 'react'
+import React, { useState } from 'react'
 import StorySubjectinputs from './_components/StorySubjectinputs'
 import StoryType from './_components/StoryType';
 import AgeGroup from './_components/AgeGroup';
 import ImageStyle from './_components/ImageStyle';
+import { Button } from '@heroui/button';
 
 export interface fieldData {
   fieldName: string,
   fieldValue: string
 }
+export interface formDataType{
+  storySubject:string,
+  storyType:string,
+  imageStyle:string,
+  ageGroup:string
+}
 
 function CreateStory() {
 
+  const [formData,setFormData]=useState<formDataType>();
+
   const onHandleUserSelection=(data:fieldData)=>{
-    console.log(data);
+    setFormData((prev:any)=>({
+      ...prev,
+      [data.fieldName]:data.fieldValue
+    }));
+    console.log(formData)
 
   }
 
@@ -39,6 +52,9 @@ function CreateStory() {
         {/* Image Style */}
         <ImageStyle userSelection={onHandleUserSelection}/>
 
+      </div>
+      <div className='flex justify-end my-10'>
+        <Button color='primary' className='p-10 text-2xl'>Generate Story</Button>
       </div>
     </div>
   )
