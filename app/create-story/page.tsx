@@ -6,6 +6,9 @@ import StoryType from './_components/StoryType';
 import AgeGroup from './_components/AgeGroup';
 import ImageStyle from './_components/ImageStyle';
 import { Button } from '@heroui/button';
+import { chatSession } from '@/config/GeminiAi';
+
+const CREATE_STORY_PROMPT=process.env.NEXT_PUBLIC_CREATE_STORY_PROMPT
 
 export interface fieldData {
   fieldName: string,
@@ -21,6 +24,7 @@ export interface formDataType{
 function CreateStory() {
 
   const [formData,setFormData]=useState<formDataType>();
+  const [loading,setLoading]=useState(false);
 
   const onHandleUserSelection=(data:fieldData)=>{
     setFormData((prev:any)=>({
@@ -28,6 +32,36 @@ function CreateStory() {
       [data.fieldName]:data.fieldValue
     }));
     console.log(formData)
+
+  }
+
+  const GenerateStory=async()=>{
+
+    setLoading(true);
+
+    const FINAL_PROMPT=CREATE_STORY_PROMPT
+    ?.replace('{ageGroup}',formData?.ageGroup??'')
+    .replace('{storyType}',formData?.storyType??'')
+    .replace('{storySubject}',formData?.storySubject??'')
+    .replace('{imageStyle}',formData?.imageStyle??'')
+
+    //Generate AI Story
+    try{
+      
+      const result=await chatSession.sendMessage(FINAL_PROMPT);
+      console.log(result?.response.text());
+      setLoading(false);
+
+    }catch(e){
+      console.log(e)
+      setLoading(false);
+    }
+
+    //Save in database
+
+    //Generate Image
+
+
 
   }
 
@@ -54,7 +88,10 @@ function CreateStory() {
 
       </div>
       <div className='flex justify-end my-10'>
-        <Button color='primary' className='p-10 text-2xl'>Generate Story</Button>
+        <Button color='primary'
+        disabled={loading}
+         className='p-10 text-2xl'
+        onClick={GenerateStory}>Generate Story</Button>
       </div>
     </div>
   )
