@@ -32,7 +32,7 @@ function ImageStyle({userSelection}:any) {
             
                     userSelection({
                         fieldValue:item?.label,
-                        fieldName:'imageType'
+                        fieldName:'imageStyle'
                     })
             
             

@@ -7,6 +7,12 @@ import AgeGroup from './_components/AgeGroup';
 import ImageStyle from './_components/ImageStyle';
 import { Button } from '@heroui/button';
 import { chatSession } from '@/config/GeminiAi';
+import { db } from '@/config/db';
+import { StoryData } from '@/config/schema';
+
+//@ts-ignore
+import uuid4 from "uuid4";
+import CustomLoader from './_components/CustomLoader';
 
 const CREATE_STORY_PROMPT=process.env.NEXT_PUBLIC_CREATE_STORY_PROMPT
 
@@ -50,6 +56,8 @@ function CreateStory() {
       
       const result=await chatSession.sendMessage(FINAL_PROMPT);
       console.log(result?.response.text());
+      const resp=await SaveInDB(result?.response.text());
+      console.log(resp);
       setLoading(false);
 
     }catch(e){
@@ -57,12 +65,33 @@ function CreateStory() {
       setLoading(false);
     }
 
-    //Save in database
-
     //Generate Image
 
+  }
+    //Save in database
+  const SaveInDB=async(output:string)=>
+  {
+    const recordID=uuid4();
+    setLoading(true);
+    try{
+    const result = await db.insert(StoryData).values({
+
+      stooryId:recordID,
+      ageGroup:formData?.ageGroup,
+      imageStyle:formData?.imageStyle,
+      storySubject:formData?.storySubject,
+      storyType:formData?.storyType,
+      output:JSON.parse(output)
 
 
+    }).returning({stooryId:StoryData?.stooryId})
+    setLoading(false);
+    return result;
+  }
+  catch(e){
+    setLoading(false);
+
+  }
   }
 
 
@@ -93,6 +122,7 @@ function CreateStory() {
          className='p-10 text-2xl'
         onClick={GenerateStory}>Generate Story</Button>
       </div>
+      <CustomLoader isLoading={loading}/>
     </div>
   )
 }
